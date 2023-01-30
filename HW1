@@ -1,29 +1,38 @@
 HW1
 
-Q1
+=================Q1=================
 
 docker build
 docker build --help
-
 --iidfile string          Write the image ID to the file
 
 
 
-Q2
+=================Q2=================
+
+docker run -it --entrypoint=bash python:3.9
+pip list
+Package    Version
+---------- -------
+pip        22.0.4
+setuptools 58.1.0
+wheel      0.38.4
+# 3 packages are installed
+
+=================Q3=================
+
+ 
 
 
 
 
-Q3
+=================Q4=================
 
 
-Q4
+=================Q5=================
 
 
-Q5
-
-
-Q6
+=================Q6=================
 
 
 
