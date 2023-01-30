@@ -74,18 +74,39 @@ ORDER BY t.pu_day
 #20530
 
 
-
-
-
-
 =================Q4=================
+
+SELECT CAST(lpep_pickup_datetime AS DATE) as "pu_day", t.trip_distance
+FROM
+	yellow_taxi_data t
+ORDER BY t.trip_distance DESC
+
+# 2019-01-15
+
 
 
 =================Q5=================
 
+SELECT   t.passenger_count, COUNT(1)
+FROM
+	yellow_taxi_data t
+where CAST(lpep_pickup_datetime AS DATE) = '20190101'
+group by t.passenger_count
+
+
+# 2: 1282 ; 3: 254
+
 
 =================Q6=================
+SELECT zz."Zone", tip_amount
+FROM
+	yellow_taxi_data t 
+	LEFT JOIN zones z ON t."PULocationID" = z."LocationID"
+	LEFT JOIN zones zz ON t."DOLocationID" = zz."LocationID"
+	
+WHERE z."Zone" = 'Astoria'
+ORDER BY tip_amount DESC
 
-
+#Long Island City/Queens Plaza
 
 
