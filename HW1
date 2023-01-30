@@ -21,7 +21,59 @@ wheel      0.38.4
 
 =================Q3=================
 
+#DOCKER
  
+ docker run -it \
+    -e POSTGRES_USER="root" \
+    -e POSTGRES_PASSWORD="root" \
+    -e POSTGRES_DB="ny_taxi" \
+    -v /Users/leizhou/Documents/techjob/decamp/w1/postgres_data:/var/lib/postgresql/data \
+    -p 5432:5432 \
+    --network pg-network \
+    --name pg-database \
+    postgres:13
+
+docker run -it \
+    -e PGADMIN_DEFAULT_EMAIL="admin@admin.com" \
+    -e PGADMIN_DEFAULT_PASSWORD="root" \
+    -p 8080:80 \
+    --network pg-network \
+    --name pgadmin \
+    dpage/pgadmin4
+
+#PYTHON
+
+import pandas as pd
+from sqlalchemy import create_engine
+df = pd.read_csv('/Users/leizhou/Documents/techjob/decamp/w1/green_tripdata_2019-01.csv')
+df.lpep_pickup_datetime = pd.to_datetime(df.lpep_pickup_datetime)
+df.lpep_dropoff_datetime = pd.to_datetime(df.lpep_dropoff_datetime)
+engine = create_engine('postgresql://root:root@localhost:5432/ny_taxi')
+print(pd.io.sql.get_schema(df, name='yellow_taxi_data', con=engine))
+df.to_sql(name='yellow_taxi_data', con=engine, if_exists = 'replace')
+df_zones = pd.read_csv('/Users/leizhou/Documents/techjob/decamp/w1/taxi+_zone_lookup.csv')
+df_zones.to_sql(name='zones', con=engine, if_exists = 'replace')
+
+
+# PGADMIN
+
+
+SELECT t.pu_day, COUNT(1)
+FROM
+(
+SELECT
+	CAST(lpep_pickup_datetime AS DATE) as "pu_day",
+	CAST(lpep_dropoff_datetime AS DATE) as "do_day"
+FROM
+	yellow_taxi_data
+	) t
+WHERE t.pu_day =t.do_day
+GROUP BY t.pu_day
+ORDER BY t.pu_day
+
+#20530
+
+
 
 
 
